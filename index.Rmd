@@ -1,0 +1,142 @@
+---
+title: "UW Women’s Basketball Statistics"
+output:
+  html_document:
+    theme: flatly
+
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r inits, echo=FALSE, message=FALSE}
+library(fmsb)
+library(here)
+datadir <- here("data")
+
+Re2prec <- function(x,map="round",prec=1) {
+  ## 'map' can be round, floor, or ceiling
+  ## 'prec' is nearest value (eg, 0.1 means to nearest tenth); default 1 gives normal behavior
+  if(prec<=0) { stop("\"prec\" cannot be less than or equal to 0") }
+  do.call(map,list(x/prec))*prec
+}
+```
+
+```{r stats, echo=FALSE}
+## player names
+players <- c("Johnson", "Henson", "Melgoza", "Hagstrom", "Van Dyke", "Rooks",
+             "Moser", "Watkins", "Garcia", "Griggsby", "Peterson", "Rees")
+
+## plater numbers
+numbers <- c(1, 3, 4, 12, 15, 20, 24, 25, 32, 35, 44, 53)
+
+## schedule
+dates <- c("11-08", "11-11", "11-18", "11-23", "11-24", "11-25", "11-30",
+           "12-02", "12-05", "12-15", "12-16", "12-20", "12-30",
+           "01-04", "01-06", "01-11", "01-13", "01-18", "01-20", "01-25", "01-27",
+           "02-01", "02-03", "02-07", "02-09", "02-15", "02-22", "02-24",
+           "03-01", "03-03", "03-07")
+
+where <- c("H", "H", "A",
+           "A", "A", "A",
+           "A", "H", "H",
+           "H", "H", "H",
+           "H",
+           "A", "A",
+           "H", "H",
+           "A", "A",
+           "H", "H",
+           "A", "A",
+           "H", "H",
+           "A",
+           "A", "A",
+           "H", "H",
+           "A")
+
+opponent <- c("Cal State Fullerton", "Northern Arizona", "Tulane",
+              "Duke", "Fordham", "Michigan",
+              "Seattle", "George Mason", "Ohio State",
+              "Montana", "Boise State", "Mississippi State",
+              "Washington State",
+              "Oregon", "Oregon State",
+              "Colorado", "Utah",
+              "Stanford", "California",
+              "Oregon State", "Oregon",
+              "USC", "UCLA",
+              "Arizona", "Arizona State",
+              "Washington State",
+              "Utah", "Colorado",
+              "California", "Stanford",
+              NA)
+  
+schedule <- data.frame(Date = dates, Where = where, Opponent = opponent)
+
+
+
+# stats <- readr::read_csv(file.path(datadir,"uwwbb_stats.csv"))
+stats <- read.csv(file.path(datadir,"uwwbb_stats.csv"), stringsAsFactors = FALSE)
+
+## make game on date col
+stats$Date <- as.Date(stats$Date, "%Y-%m-%d")
+stats$date_opp <- paste(format(stats$Date, "%b %d"), stats$Opponent)
+
+## last name
+stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
+  
+```
+
+# Individual statistics
+
+Here are some game statistics by individual.
+
+## Scoring
+
+
+```{r eruptions, echo=FALSE, fig.height=5, fig.width=5}
+inputPanel(
+  selectInput("game_date", label = "Game",
+              choices = unique(stats$date_opp))
+  
+)
+
+renderPlot({
+  
+  ## which game
+  game <- subset(stats, stats$date_opp == input$game_date)
+  ## order by player number
+  game <- game[order(-game$Number),]
+  ## player info
+  last <- sub("([^,]+),\\s([^,]+)", "\\1", game$Player)
+  players <- paste0("#", game$Number, " ", last)
+  ## num of players
+  np <- length(players)
+
+  ## plot data
+  points <- game$PTS
+  # points[points == 0] <- 1
+  upper <- Re2prec(max(points, na.rm = TRUE), "ceiling", 5)
+  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), points))
+  rownames(pdat) <- NULL
+  colnames(pdat) <- players
+  
+  ## radar plot
+  radarchart(pdat, axistype = 1,
+             
+             ## custom polygon
+             pcol = "purple3", pfcol = adjustcolor("purple3", alpha = 0.5), plwd = 4, 
+             
+             ## custom the grid
+             cglcol = "grey", cglty = 1, axislabcol = "grey",
+             caxislabels = seq(0, upper, 5), cglwd = 0.8,
+             
+             ## custom labels
+             vlcex = 1.2 
+  )
+  }, height = 600, width = 600 )
+```
+
+
+
