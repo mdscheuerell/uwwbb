@@ -48,9 +48,30 @@ stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
 
 # UW Women’s Basketball
 
+***
+
 ## Individual Statistics
 
+__Scoring__
 
+The widths of the 3 bands indicate the number of points from
+
+* Free-throws (inner)  
+* 2-pointers (middle)  
+* 3-pointers (outer)
+
+The sum of the three bands is the total points for the game.
+
+__Rebounds__
+
+The width of each band indicates the number of
+
+* Offensive rebounds (inner)  
+* Defensive rebounds (outer)
+
+The sum of the two bands is the total number of rebounds for the game.
+
+***
 
 ```{r eruptions, echo=FALSE, fig.height=5, fig.width=5}
 inputPanel(
@@ -84,13 +105,13 @@ renderPlot({
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/5,
-             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.3),
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.4),
              plwd = c(3,2,1), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 5), cglwd = 0.8,
              vlcex = 1.5
   )
-  mtext(side = 3, expression(bold(Points)), line = 1.5, cex=2)
+  mtext(side = 3, expression(bold(Scoring)), line = 1.5, cex=2)
 
   ## rebounds
   rebounds <- game$REB
