@@ -129,7 +129,7 @@ renderPlot({
   rownames(pdat) <- NULL
   colnames(pdat) <- players
   
-  par(xpd = TRUE, mfrow = c(2,2), mai = c(0.5, 0.5, 1, 0.5), omi = rep(0,4))
+  par(xpd = TRUE, mfrow = c(2,2), mai = c(0.4, 0.4, 0.9, 0.4), omi = rep(0,4))
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/5,
@@ -143,14 +143,16 @@ renderPlot({
 
   ## rebounds
   rebounds <- game$REB
+  ORB <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$ORB.DRB))
   upper <- Re2prec(max(rebounds, na.rm = TRUE), "ceiling", 2)
-  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), rebounds))
+  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), ORB, rebounds))
   rownames(pdat) <- NULL
   colnames(pdat) <- players
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/2,
-             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5),
+             plwd = c(3,2), plty = "solid", pcex = 5,
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 2), cglwd = 0.8,
              vlcex = 1.5 
