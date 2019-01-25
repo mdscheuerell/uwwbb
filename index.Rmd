@@ -46,7 +46,7 @@ stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
 
 <img src="./figs/UW_logo.png" height=150 width=150>
 
-# UW Women’s Basketball
+# University of Washington Women’s Basketball
 
 ***
 
@@ -92,7 +92,9 @@ renderPlot({
   ## num of players
   np <- length(players)
 
+  ##--------
   ## points
+  ##--------
   FT <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$FT))
   P3 <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$X3PT))*3L
   P2 <- game$PTS - P3 - FT
@@ -104,7 +106,7 @@ renderPlot({
   par(xpd = TRUE, mfrow = c(2,2), mai = c(0.4, 0.4, 0.9, 0.4), omi = rep(0,4))
   
   ## radar plot
-  radarchart(pdat, axistype = 1, seg = upper/5,
+  radarchart(pdat, axistype = 1, seg = upper/5, calcex = 1.5,
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.4),
              plwd = c(3,2,1), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
@@ -113,7 +115,9 @@ renderPlot({
   )
   mtext(side = 3, expression(bold(Scoring)), line = 1.5, cex=2)
 
+  ##----------
   ## rebounds
+  ##----------
   rebounds <- game$REB
   ORB <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$ORB.DRB))
   upper <- Re2prec(max(rebounds, na.rm = TRUE), "ceiling", 2)
@@ -122,7 +126,7 @@ renderPlot({
   colnames(pdat) <- players
   
   ## radar plot
-  radarchart(pdat, axistype = 1, seg = upper/2,
+  radarchart(pdat, axistype = 1, seg = upper/2, calcex = 1.5,
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5),
              plwd = c(3,2), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
@@ -131,7 +135,9 @@ renderPlot({
   )
   mtext(side = 3, expression(bold(Rebounds)), line = 1.5, cex=2)
 
+  ##---------
   ## assists
+  ##---------
   assists <- game$A
   upper <- Re2prec(max(assists, na.rm = TRUE), "ceiling", 2)
   pdat <- data.frame(rbind(rep(upper, np), rep(0, np), assists))
@@ -139,15 +145,17 @@ renderPlot({
   colnames(pdat) <- players
   
   ## radar plot
-  radarchart(pdat, axistype = 1, seg = upper/2,
+  radarchart(pdat, axistype = 1, seg = upper, calcex = 1.5,
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
-             caxislabels = seq(0, upper, 2), cglwd = 0.8,
+             caxislabels = seq(0,upper), cglwd = 0.8,
              vlcex = 1.5 
   )
   mtext(side = 3, expression(bold(Assists)), line = 1.5, cex=2)
 
+  ##-----------
   ## turnovers
+  ##-----------
   turnovers <- game$TO
   upper <- Re2prec(max(turnovers, na.rm = TRUE), "ceiling", 2)
   pdat <- data.frame(rbind(rep(upper, np), rep(0, np), turnovers))
@@ -155,10 +163,10 @@ renderPlot({
   colnames(pdat) <- players
   
   ## radar plot
-  radarchart(pdat, axistype = 1, seg = upper/2,
+  radarchart(pdat, axistype = 1, seg = upper, calcex = 1.5,
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
-             caxislabels = seq(0, upper, 2), cglwd = 0.8,
+             caxislabels = seq(0,upper), cglwd = 0.8,
              vlcex = 1.5 
   )
   mtext(side = 3, expression(bold(Turnovers)), line = 1.5, cex=2)
