@@ -88,11 +88,8 @@ stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
   
 ```
 
-# Individual statistics
 
-Here are some game statistics by individual.
-
-## Scoring
+# Individual
 
 
 ```{r eruptions, echo=FALSE, fig.height=5, fig.width=5}
@@ -114,28 +111,40 @@ renderPlot({
   ## num of players
   np <- length(players)
 
-  ## plot data
+  ## points
   points <- game$PTS
-  # points[points == 0] <- 1
   upper <- Re2prec(max(points, na.rm = TRUE), "ceiling", 5)
   pdat <- data.frame(rbind(rep(upper, np), rep(0, np), points))
   rownames(pdat) <- NULL
   colnames(pdat) <- players
   
+  par(xpd = TRUE, mfrow = c(1,2), mai = rep(1,4), omi = rep(0,4))
   ## radar plot
-  radarchart(pdat, axistype = 1,
-             
-             ## custom polygon
+  radarchart(pdat, axistype = 1, seg = upper/5,
              pcol = "purple3", pfcol = adjustcolor("purple3", alpha = 0.5), plwd = 4, 
-             
-             ## custom the grid
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 5), cglwd = 0.8,
-             
-             ## custom labels
+             vlcex = 1.2
+  )
+  mtext(side = 3, expression(bold(Points)), line = 1.5, cex=2)
+
+  ## rebounds
+  rebounds <- game$REB
+  upper <- Re2prec(max(rebounds, na.rm = TRUE), "ceiling", 5)
+  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), rebounds))
+  rownames(pdat) <- NULL
+  colnames(pdat) <- players
+  
+  ## radar plot
+  radarchart(pdat, axistype = 1, seg = upper/5,
+             pcol = "purple3", pfcol = adjustcolor("purple3", alpha = 0.5), plwd = 4, 
+             cglcol = "grey", cglty = 1, axislabcol = "grey",
+             caxislabels = seq(0, upper, 5), cglwd = 0.8,
              vlcex = 1.2 
   )
-  }, height = 600, width = 600 )
+  mtext(side = 3, expression(bold(Rebounds)), line = 1.5, cex=2)
+
+  }, height = 500, width = 1000 )
 ```
 
 
