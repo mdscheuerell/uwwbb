@@ -25,6 +25,8 @@ Re2prec <- function(x,map="round",prec=1) {
   if(prec<=0) { stop("\"prec\" cannot be less than or equal to 0") }
   do.call(map,list(x/prec))*prec
 }
+
+uw_purple <- "#4b2e83"
 ```
 
 ```{r stats, echo=FALSE}
@@ -91,11 +93,13 @@ stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
 ```
 
 
-<img src="./figs/UW_logo.png" height=200 width=200>
+<img src="./figs/UW_logo.png" height=150 width=150>
 
 # UW Women’s Basketball
 
 ## Individual Statistics
+
+
 
 ```{r eruptions, echo=FALSE, fig.height=5, fig.width=5}
 inputPanel(
@@ -117,9 +121,11 @@ renderPlot({
   np <- length(players)
 
   ## points
-  points <- game$PTS
-  upper <- Re2prec(max(points, na.rm = TRUE), "ceiling", 5)
-  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), points))
+  FT <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$FT))
+  P3 <- as.integer(sub("(^\\d{1,2})(-.*)", "\\1", game$X3PT))*3L
+  P2 <- game$PTS - P3 - FT
+  upper <- Re2prec(max(game$PTS, na.rm = TRUE), "ceiling", 5)
+  pdat <- data.frame(rbind(rep(upper, np), rep(0, np), FT, FT+P2, FT+P2+P3))
   rownames(pdat) <- NULL
   colnames(pdat) <- players
   
@@ -127,7 +133,8 @@ renderPlot({
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/5,
-             pcol = "purple4", pfcol = adjustcolor("purple4", alpha = 0.5), plwd = 4, 
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.3),
+             plwd = c(3,2,1), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 5), cglwd = 0.8,
              vlcex = 1.5
@@ -143,7 +150,7 @@ renderPlot({
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/2,
-             pcol = "purple4", pfcol = adjustcolor("purple4", alpha = 0.5), plwd = 4, 
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 2), cglwd = 0.8,
              vlcex = 1.5 
@@ -159,7 +166,7 @@ renderPlot({
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/2,
-             pcol = "purple4", pfcol = adjustcolor("purple4", alpha = 0.5), plwd = 4, 
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 2), cglwd = 0.8,
              vlcex = 1.5 
@@ -175,7 +182,7 @@ renderPlot({
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/2,
-             pcol = "purple4", pfcol = adjustcolor("purple4", alpha = 0.5), plwd = 4, 
+             pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 2), cglwd = 0.8,
              vlcex = 1.5 
