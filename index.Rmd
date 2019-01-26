@@ -103,7 +103,7 @@ renderPlot({
   rownames(pdat) <- NULL
   colnames(pdat) <- players
   
-  par(xpd = TRUE, mfrow = c(2,2), mai = c(0.4, 0.4, 0.9, 0.4), omi = rep(0,4))
+  par(xpd = TRUE, mfrow = c(2,2), mai = c(0.2, 0.5, 0.6, 0.5), omi = rep(0,4))
   
   ## radar plot
   radarchart(pdat, axistype = 1, seg = upper/5, calcex = 1.5,
@@ -111,9 +111,9 @@ renderPlot({
              plwd = c(3,2,1), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 5), cglwd = 0.8,
-             vlcex = 1.5
+             vlcex = 1.3
   )
-  mtext(side = 3, expression(bold(Scoring)), line = 1.5, cex=2)
+  mtext(side = 3, expression(bold(Scoring)), line = 0, cex=2, adj = 0)
 
   ##----------
   ## rebounds
@@ -131,9 +131,9 @@ renderPlot({
              plwd = c(3,2), plty = "solid",
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0, upper, 2), cglwd = 0.8,
-             vlcex = 1.5 
+             vlcex = 1.3 
   )
-  mtext(side = 3, expression(bold(Rebounds)), line = 1.5, cex=2)
+  mtext(side = 3, expression(bold(Rebounds)), line = 0, cex=2, adj = 0)
 
   ##---------
   ## assists
@@ -149,9 +149,9 @@ renderPlot({
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0,upper), cglwd = 0.8,
-             vlcex = 1.5 
+             vlcex = 1.3 
   )
-  mtext(side = 3, expression(bold(Assists)), line = 1.5, cex=2)
+  mtext(side = 3, expression(bold(Assists)), line = 0, cex=2, adj = 0)
 
   ##-----------
   ## turnovers
@@ -167,11 +167,11 @@ renderPlot({
              pcol = uw_purple, pfcol = adjustcolor(uw_purple, alpha = 0.5), plwd = 3, 
              cglcol = "grey", cglty = 1, axislabcol = "grey",
              caxislabels = seq(0,upper), cglwd = 0.8,
-             vlcex = 1.5 
+             vlcex = 1.3 
   )
-  mtext(side = 3, expression(bold(Turnovers)), line = 1.5, cex=2)
+  mtext(side = 3, expression(bold(Turnovers)), line = 0, cex=2, adj = 0)
 
-  }, height = 1000, width = 1000 )
+  }, height = 900, width = 900 )
 ```
 
 
