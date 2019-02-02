@@ -51,7 +51,7 @@ stats$last <- sub("([^,]+),\\s([^,]+)", "\\1", stats$Player)
 
 ***
 
-## Individual Statistics
+## 2018-2019 Individual Statistics
 
 __Scoring__
 
@@ -93,7 +93,7 @@ renderPlot({
   game <- game[order(-game$Number),]
   ## player info
   last <- sub("([^,]+),\\s([^,]+)", "\\1", game$Player)
-  players <- paste0("#", game$Number, " ", last)
+  players <- paste0(game$Number, " ", last)
   ## num of players
   np <- length(players)
   ## non-players for the game
